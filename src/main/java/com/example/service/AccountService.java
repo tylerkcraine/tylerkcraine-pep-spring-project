@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.example.entity.Account;
 import com.example.exception.AccountExistsException;
 import com.example.exception.ClientErrorException;
+import com.example.exception.UnauthorizedException;
 import com.example.repository.AccountRepository;
 
 @Service
@@ -25,5 +26,18 @@ public class AccountService {
 
         accountRepository.saveAndFlush(newAccount);
         return accountRepository.getAccountByUsername(newAccount.getUsername());
+    }
+
+    public Account login(Account loginAccount) {
+        Account account = accountRepository.getAccountByUsername(loginAccount.getUsername());
+        if (account == null) {
+            throw new UnauthorizedException("Username or password incorrect");
+        }
+
+        if (loginAccount.getPassword().contentEquals(account.getPassword())) {
+            return account;
+        } else {
+            throw new UnauthorizedException("Username or password incorrect");
+        }
     }
 }
