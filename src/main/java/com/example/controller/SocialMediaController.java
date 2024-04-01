@@ -2,10 +2,13 @@ package com.example.controller;
 
 import java.util.List;
 
+import javax.websocket.server.PathParam;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -53,7 +56,12 @@ public class SocialMediaController {
 
     @GetMapping("messages")
     public List<Message> getMessages() {
-        return messageService.getAllMessage();
+        return messageService.getAllMessages();
+    }
+
+    @GetMapping("messages/{a_id}")
+    public Message getMessage(@PathVariable("a_id") Integer messageId) {
+        return messageService.getMessage(messageId);
     }
     
     //exceptions start
@@ -71,7 +79,7 @@ public class SocialMediaController {
 
     @ExceptionHandler(UnauthorizedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public String handleUnautorized(UnauthorizedException e) {
+    public String handleUnauthorized(UnauthorizedException e) {
         return e.getMessage();
     }
 }

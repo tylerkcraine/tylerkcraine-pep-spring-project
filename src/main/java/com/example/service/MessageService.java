@@ -39,9 +39,14 @@ public class MessageService{
      * simple service method to return all the messages in the database
      * @return list of Message objects from the database
      */
-    public List<Message> getAllMessage() {
+    public List<Message> getAllMessages() {
         return messageRepository.findAll();
     }
 
-    
+
+    public Message getMessage(Integer messageId) {
+        return messageRepository.findById(messageId).orElse(null);
+    }
+
+
 }
