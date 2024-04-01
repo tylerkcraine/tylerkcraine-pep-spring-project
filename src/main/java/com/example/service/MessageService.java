@@ -74,11 +74,20 @@ public class MessageService{
         }
     }
 
-
+    /**
+     * method to edit a message currently in the database
+     * @param messageId
+     * @param message message with the method text to edit
+     * @throws ClientErrorException
+     */
     public void editMessage(Integer messageId, Message message) {
-        if (messageRepository.existsById(messageId) && message.getMessage_text().length() < 255) {
-            Message editMessage = messageRepository.getById(messageId);
+        if (messageRepository.existsById(messageId) && 
+                message.getMessage_text().length() < 255 &&
+                !message.getMessage_text().isBlank()) {
+                Message editMessage = messageRepository.getById(messageId);
             editMessage.setMessage_text(message.getMessage_text());
+        } else {
+            throw new ClientErrorException("Message edit failed");
         }
     }
 }

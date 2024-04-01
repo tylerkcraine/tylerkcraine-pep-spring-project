@@ -85,6 +85,7 @@ public class SocialMediaController {
     @PatchMapping("messages/{a_id}")
     public String editMessage(@PathVariable("a_id") Integer messageId, @RequestBody Message message) {
         messageService.editMessage(messageId, message);
+        return "1";
     }
     
     //exceptions start
