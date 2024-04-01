@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.entity.Account;
 import com.example.entity.Message;
 import com.example.exception.ClientErrorException;
 import com.example.repository.AccountRepository;
@@ -72,6 +71,14 @@ public class MessageService{
             return 1;
         } else {
             return 0;
+        }
+    }
+
+
+    public void editMessage(Integer messageId, Message message) {
+        if (messageRepository.existsById(messageId) && message.getMessage_text().length() < 255) {
+            Message editMessage = messageRepository.getById(messageId);
+            editMessage.setMessage_text(message.getMessage_text());
         }
     }
 }
