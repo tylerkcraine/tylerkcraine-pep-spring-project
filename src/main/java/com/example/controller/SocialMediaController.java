@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.entity.Account;
+import com.example.entity.Message;
 import com.example.exception.AccountExistsException;
 import com.example.exception.ClientErrorException;
 import com.example.exception.UnauthorizedException;
@@ -28,8 +29,9 @@ public class SocialMediaController {
     AccountService accountService;
 
     @Autowired
-    MessageService studentService;
+    MessageService messageService;
 
+    //account paths start
     @PostMapping("register")
     @ResponseStatus(HttpStatus.OK)
     public Account registerAccount(@RequestBody Account newAccount) {
@@ -40,6 +42,13 @@ public class SocialMediaController {
     @ResponseStatus(HttpStatus.OK)
     public Account loginUser(@RequestBody Account loginAccount) {
         return accountService.login(loginAccount);
+    }
+
+    //message paths start
+    @PostMapping("messages")
+    @ResponseStatus(HttpStatus.OK)
+    public Message createMessage(@RequestBody Message newMessage) {
+        return messageService.addMessage(newMessage);
     }
 
     //exceptions start
