@@ -1,8 +1,11 @@
 package com.example.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -33,24 +36,26 @@ public class SocialMediaController {
 
     //account paths start
     @PostMapping("register")
-    @ResponseStatus(HttpStatus.OK)
     public Account registerAccount(@RequestBody Account newAccount) {
         return accountService.addAccount(newAccount);
     }
 
     @PostMapping("login")
-    @ResponseStatus(HttpStatus.OK)
     public Account loginUser(@RequestBody Account loginAccount) {
         return accountService.login(loginAccount);
     }
 
     //message paths start
     @PostMapping("messages")
-    @ResponseStatus(HttpStatus.OK)
     public Message createMessage(@RequestBody Message newMessage) {
         return messageService.addMessage(newMessage);
     }
 
+    @GetMapping("messages")
+    public List<Message> getMessages() {
+        return messageService.getAllMessage();
+    }
+    
     //exceptions start
     @ExceptionHandler(AccountExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)

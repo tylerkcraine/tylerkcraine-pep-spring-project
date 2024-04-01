@@ -1,6 +1,6 @@
 package com.example.service;
 
-import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +19,11 @@ public class MessageService{
     @Autowired
     MessageRepository messageRepository;
 
+    /**
+     * service method to add a message to the database
+     * @param newMessage
+     * @return Message object representing the now in database message
+     */
     public Message addMessage(Message newMessage) {
         Account sender = accountRepository.findById(newMessage.getPosted_by()).orElseThrow(() -> new ClientErrorException("Message not created"));
 
@@ -30,4 +35,13 @@ public class MessageService{
     }
 
 
+    /**
+     * simple service method to return all the messages in the database
+     * @return list of Message objects from the database
+     */
+    public List<Message> getAllMessage() {
+        return messageRepository.findAll();
+    }
+
+    
 }
