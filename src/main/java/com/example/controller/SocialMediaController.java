@@ -4,8 +4,10 @@ import java.util.List;
 
 import javax.websocket.server.PathParam;
 
+import org.hibernate.id.IntegralDataTypeHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,6 +64,21 @@ public class SocialMediaController {
     @GetMapping("messages/{a_id}")
     public Message getMessage(@PathVariable("a_id") Integer messageId) {
         return messageService.getMessage(messageId);
+    }
+
+    @GetMapping("accounts/{account_id}/messages")
+    public List<Message> getMessagesFromAccount(@PathVariable("account_id") Integer accountId) {
+        return messageService.getMessageFromAccountId(accountId);
+    }
+
+    @DeleteMapping("messages/{a_id}")
+    public String deleteMessage(@PathVariable("a_id") Integer messageId) {
+        Integer result = messageService.deleteMessage(messageId);
+        if (result.equals(1)) {
+            return "1";
+        } else {
+            return "";
+        }
     }
     
     //exceptions start

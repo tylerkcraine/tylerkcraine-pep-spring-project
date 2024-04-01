@@ -25,9 +25,9 @@ public class MessageService{
      * @return Message object representing the now in database message
      */
     public Message addMessage(Message newMessage) {
-        Account sender = accountRepository.findById(newMessage.getPosted_by()).orElseThrow(() -> new ClientErrorException("Message not created"));
-
-        if (newMessage.getPosted_by() != sender.getAccount_id() || newMessage.getMessage_text().isBlank() || newMessage.getMessage_text().length() > 255) {
+        if (!messageRepository.existsById(newMessage.getPosted_by()) || 
+            newMessage.getMessage_text().isBlank() || 
+            newMessage.getMessage_text().length() > 255) {
             throw new ClientErrorException("Message not created");
         }
 
@@ -43,10 +43,35 @@ public class MessageService{
         return messageRepository.findAll();
     }
 
-
+    /**
+     * simple service method to return a message from its' id
+     * @param messageId
+     * @return the message retrieved from the database, null if not found
+     */
     public Message getMessage(Integer messageId) {
         return messageRepository.findById(messageId).orElse(null);
     }
 
+    /**
+     * simple method to get all the messages posted by a certain account
+     * @param accountId
+     * @return list of messages retrieved from database, empty if none found
+     */
+    public List<Message> getMessageFromAccountId(Integer accountId) {
+        return messageRepository.findMessageByPostedBy(accountId);
+    }
 
+    /**
+     * simple method to delete a message from the database based on id
+     * @param messageId
+     * @return 1 if successful 0 if not
+     */
+    public Integer deleteMessage(Integer messageId) {
+        if (messageRepository.existsById(messageId)) {
+            messageRepository.deleteById(messageId);
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 }
